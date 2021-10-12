@@ -2,12 +2,80 @@
 <html>
     <head>
         <!-- head definitions go here -->
+	<link rel="stylesheet" href="client_time_css.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     </head>
-    <body>
-	    <h1 id="mytime"></h1>
+    <body style = "text-align:center">
+
+	<h1> Halloween Classics </h1>
+
 	<script>
+		var i = 1;
+		
+		function prevMovie(){
+			if(i == 1){
+				document.getElementsByClassName(
+					'Previous Movie').disabled = true;
+				document.getElementsByClassName(
+					'Next Movie').disabled = false;
+			} else {
+				i--;
+				setMovie();
+			}
+		}
+
+		function nextMovie(){
+			if(i == 7) {
+				document.getElementsByClassName(
+					'Next Movie').disabled = true;
+
+				document.getElementsByClassName(
+					'Previous Movie').disabled = false;
+			} else {
+				i++;
+				setMovie();
+			}
+		}
+
+		function setMovie() {
+			switch(i) {
+				case 1:
+					document.getElementById("img").src = "https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Halloween_%281978%29_theatrical_poster.jpg/220px-Halloween_%281978%29_theatrical_poster.jpg";
+					break;
+				case 2:
+					document.getElementById("img").src = "https://m.media-amazon.com/images/M/MV5BNzFjZmM1ODgtMDBkMS00NWFlLTg2YmUtZjc3ZTgxMjE1OTI2L2ltYWdlXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg";
+					break;
+				case 3:
+					document.getElementById("img").src = "https://m.media-amazon.com/images/M/MV5BNWE4OTNiM2ItMjY4Ni00ZTViLWFiZmEtZGEyNGY2ZmNlMzIyXkEyXkFqcGdeQXVyMDU5NDcxNw@@._V1_.jpg";
+					break;
+				case 4:
+					document.getElementById("img").src = "https://images-na.ssl-images-amazon.com/images/I/81-2DWGdeYL.jpg";
+					break;
+				case 5: document.getElementById("img").src = "https://m.media-amazon.com/images/M/MV5BZDdmNjBlYTctNWU0MC00ODQxLWEzNDQtZGY1NmRhYjNmNDczXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_.jpg";
+					break;
+				case 6:
+					document.getElementById("img").src = "https://m.media-amazon.com/images/M/MV5BZjk1NTNmMTctMGMxZi00MGJmLWFlMGItM2I0OWQ1OTExMzQ1XkEyXkFqcGdeQXVyNjE5MjUyOTM@._V1_.jpg";
+					break;
+				case 7:
+					document.getElementById("img").src = "https://m.media-amazon.com/images/I/514TVkewVqL._SY445_.jpg";
+			}
+		}
+
 		setInterval( function(){ $('#mytime').html( "Time is " + new Date());}, 500);
 	</script>
+
+	<img width = "300px" src= "https://upload.wikimedia.org/wikipedia/en/thumb/a/af/Halloween_%281978%29_theatrical_poster.jpg/220px-Halloween_%281978%29_theatrical_poster.jpg" id = "img" />
+	<br>
+
+	<button onclick="prevMovie()">
+        	Previous Movie
+        </button>
+
+        <button onclick="nextMovie()">
+            	Next Movie
+        </button>
+
+	<p id="mytime" style = "position: fixed; bottom: 0; width:100%; text-align:center"></p>
+
     </body>
 </html>
