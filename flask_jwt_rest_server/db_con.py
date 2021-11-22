@@ -2,7 +2,7 @@ import psycopg2
 
 
 def get_db():
-    return psycopg2.connect(host="localhost", dbname="authme" , user="loki", password="4prez")
+    return psycopg2.connect(host="localhost", dbname="books" , user="admin", password="Impala$63")
 
 def get_db_instance():  
     db  = get_db()
@@ -15,7 +15,7 @@ def get_db_instance():
 if __name__ == "__main__":
     db, cur = get_db_instance()
 
-    cur.execute("select * from users")
+    cur.execute("select * from books")
     for r in cur.fetchall():
         print(r)
 
