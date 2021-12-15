@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+	    <link rel="shortcut icon" href="#">
 	     <script src="https://code.jquery.com/jquery-3.6.0.js" 
 		     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 	     <script src="/static/cis444.js"></script>
@@ -9,38 +10,142 @@
 
 	<script>
 		function send_form(){
-			$.post("/open_api/login", { "firstname":$('#fname').val(), "password":$('#password').val()},
+			$.post("/open_api/login", { "username":$('#username').val(), "password":$('#password').val()},
                        		function(data, textStatus) {
 					//this gets called when browser receives response from server
 					console.log(data.token);
 					//Set global JWT
 					jwt = data.token;
+
+					alert("Login successful!");
 					//make secure call with the jwt
 					get_books();
 				}, "json").fail( function(response) {
 					//this gets called if the server throws an error
 					console.log("error");
 					console.log(response);
+					alert("Incorrect Username/Password.");
+				});
+			return false;
+		}
+
+		function signUp(){
+			$.post("/open_api/signup", {"username":$('#username').val(), "password":$('#password').val()},
+				function(data, textStatus) {
+					console.log("signing up");
+					jwt=data.token;	
+					alert("Signup Successful! Log in.");
+				}, "json").fail(function(response){
+					console.log("error signing up()");
+					console.log(response);
+					alert("Signup Unsuccessful.");
 				});
 			return false;
 		}
 
 		function get_books(){
+			$("#login").hide();
+			$("#newArrivals").show();
+			$("#grapesOfWrath").show();
+			$("#dropDown").show();
+			$("#actions").show();
+			console.log("in get books function");
 			 //make secure call with the jwt
-                         secure_get_with_token("/secure_api/get_books", function(data){console.log("got books"); console.log(data)},
-                                                function(err){ console.log(err) });
+                         secure_get_with_token("/secure_api/get_books", function(data){console.log("got books"); 
+			
+			$.each(data.data.books, function(i, option) {
+				$("#bookTitles").append("<option>" + option.title + " --- $" + option.price + "</option>");
+				console.log("drop down populated");
+    				});
+
+
+			 },
+				 function(err){ console.log(err)});
+		}
+
+		function bookSelected(){
+			var bookSelected = document.getElementById("bookTitles").value;
+
+                	if(bookSelected == "The Grapes of Wrath --- $12.20"){
+                        	$('#grapesOfWrath').show();
+                        	$('#ofMiceAndMen').hide();
+                        	$('#crimeAndPunishment').hide();
+                        	$('#theScarletLetter').hide();
+                        	$('#deathOfASalesman').hide();
+                	}
+                	if(bookSelected == "Of Mice and Men --- $9.69"){
+                        	$('#ofMiceAndMen').show();
+				$('#grapesOfWrath').hide();
+                                $('#crimeAndPunishment').hide();
+                                $('#theScarletLetter').hide();
+                                $('#deathOfASalesman').hide();
+                	}
+                	if(bookSelected == "Crime and Punishment --- $5.49"){
+                        	$('#crimeAndPunishment').show();
+				$('#ofMiceAndMen').hide();
+                                $('#grapesOfWrath').hide();
+                                $('#theScarletLetter').hide();
+                                $('#deathOfASalesman').hide();
+                	}	
+                	if(bookSelected == "The Scarlet Letter --- $10.99"){
+                        	$('#theScarletLetter').show();
+				$('#crimeAndPunishment').hide();
+                                $('#ofMiceAndMen').hide();
+                                $('#grapesOfWrath').hide();
+                                $('#deathOfASalesman').hide();
+                	}
+                	if(bookSelected == "Death of a Salesman --- $5.99"){
+                        	$('#deathOfASalesman').show();
+				$('#crimeAndPunishment').hide();
+                                $('#ofMiceAndMen').hide();
+                                $('#grapesOfWrath').hide();
+                                $('#theScarletLetter').hide();
+                	}
 		}
 
 	</script>
             <div id="login">
 	    	<form >
-  			<label for="fname">First name:</label><br>
-  				<input type="text" id="fname" name="fname" value="John"><br>
+  			<label for="username">Username:</label><br>
+  				<input type="text" id="username" name="username" value="John"><br>
   			<label for="password">Password:</label><br>
   				<input type="password" id="password" name="password" value="12212"><br><br>
-  			<input type="submit" value="Signup" onclick="return send_form();">
+			<input type="submit" value="SignUp" onclick="return signUp();">
+  			<input type="submit" value="LogIn" onclick="return send_form();">
 		</form>
 	    </div>
+	   		<div id = "newArrivals" style = "display:none"> 
+                        	<h3> New Arrivals </h3>
+			</div>
+
+                        <br>
+
+                        <div id = "grapesOfWrath" value = "Grapes of Wrath" style = "display:none">
+                                <img class = "pictures" width = "300px" height = "300px" src = "https://img.thriftbooks.com/api/images/m/fed335c6285c5199f78de5ccf1a3f18eff4b998f.jpg">
+                        </div>
+                        <div id = "ofMiceAndMen" value = "Of Mice and Men" style = "display:none">
+                                <img class = "pictures" width = "300px" height = "300px" src = "https://i5.walmartimages.com/asr/a1629734-3db1-48b8-a41d-95c442bc23b7.390f492be5c37805a96fb301e30ca6c2.jpeg?odnHeight=612&odnWidth=612&odnBg=FFFFFF">
+                        </div>
+                        <div id = "crimeAndPunishment" value = "Crime and Punishment" style = "display:none" >
+                                <img class = "pictures" width = "300px" height = "300px" src = "https://nighthawknews.files.wordpress.com/2012/09/crimeandpunishment.jpeg?w=178&h=300">
+                        </div>
+                        <div id = "theScarletLetter" value = "The Scarlet Letter" style = "display:none">
+                                <img class = "pictures" width = "300px" height = "300px" src = "https://booktree.ng/wp-content/uploads/2019/08/The-Scarlet-Letter-by-Nathaniel-Hawthorne-pdf.jpg">
+                        </div>
+                        <div id = "deathOfASalesman" value = "Death of a Salesman" style = "display:none">
+                                <img class = "picture" width = "300px" height = "300px" src = "https://upload.wikimedia.org/wikipedia/en/2/20/DeathOfASalesman.jpg">
+                        </div>
+	
+			<div id = "dropDown" style = "display:none">
+                                <select id = "bookTitles" onchange = "bookSelected();"> </select>
+                        </div>
+
+                        <br>
+
+			<div id = "actions" style = "display:none">
+                        	<button id = "addToCart" type = "submit" onclick = "return addToCart();"> Add To Cart </button>
+                        	<button id = "checkout" type = "submit" onclick = "return checkout();"> Checkout </button>
+			</div>
     </body>
 </html>
 

@@ -11,6 +11,7 @@ function secure_get_with_token(endpoint, on_success_callback, on_fail_callback){
 	}
 	$.ajax({
 		url: endpoint,
+		
 		type: 'GET',
 		datatype: 'json',
 		success: on_success_callback,
